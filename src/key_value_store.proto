@@ -1,0 +1,83 @@
+// Generate key_value_store_pb2.py : Run protoc --python_out=./ ./key_value_store.proto
+
+syntax = "proto3";
+
+message PutRequest {
+    uint32 id = 1;
+    uint32 key = 2;
+    string value = 3;
+    uint32 consistency_level = 4;
+    double timestamp = 5;
+}
+
+message GetRequest {
+    uint32 id = 1;
+    uint32 key = 2;
+    string value = 3;
+    uint32 consistency_level = 4;
+    double timestamp = 5;
+}
+
+message ReadRepair{
+    uint32 key = 1;
+    string value = 2;
+    double timestamp = 3;
+}
+
+message HintedHandoff{
+    uint32 key = 1;
+    string value = 2;
+    double timestamp = 3;
+}
+
+message DisplayKeyValue{
+    bool status = 1;
+}
+
+message ReplicaRequest {
+    uint32 id = 1;
+    uint32 key = 2;
+    string value = 3;
+    uint32 operation = 4;
+    double timestamp = 5;
+}
+
+message ReplicaResponse {
+    uint32 id = 1;
+    uint32 key = 2;
+    string value = 3;
+    bool status = 4;
+    double timestamp = 5;
+    repeated ReplicaRequest hinted_handoff = 6;
+}
+
+message CoordinatorResponse {
+    uint32 id = 1;
+    uint32 key = 2;
+    string value = 3;
+    bool status = 4;
+    double timestamp = 5;
+}
+
+message ErrorMessage {
+    string msg = 1;
+}
+
+message HeartBeat{
+    bool status = 1;
+}
+
+message KeyValueMessage {
+  oneof key_value_message {
+    PutRequest put_request = 1;
+    GetRequest get_request = 2;
+    ReadRepair read_repair = 3;
+    HintedHandoff hinted_handoff = 4;
+    DisplayKeyValue display_key_value = 5;
+    ReplicaRequest replica_request = 6;
+    ReplicaResponse replica_response = 7;
+    CoordinatorResponse coordinator_response = 8;
+    ErrorMessage error_message = 9;
+    HeartBeat heart_beat = 10;
+  }
+}
